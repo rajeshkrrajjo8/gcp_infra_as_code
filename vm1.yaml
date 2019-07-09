@@ -6,7 +6,7 @@ resources:
     # of properties, see the API reference for the resource.
     zone: asia-south1-c
     # Replace [MY_PROJECT] with your project ID
-    machineType: https://www.googleapis.com/compute/v1/projects/[MyProject]/zones/asia-south1-c/machineTypes/f1-micro
+    machineType: https://www.googleapis.com/compute/v1/projects/[MY_PROJECT]/zones/asia-south1-c/machineTypes/f1-micro
     disks:
     - deviceName: boot
       type: PERSISTENT
@@ -18,9 +18,16 @@ resources:
         sourceImage: https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images/family/centos-7
     # Replace [MY_PROJECT] with your project ID
     networkInterfaces:
-    - network: https://www.googleapis.com/compute/v1/projects/[MyProject]/global/networks/default
+    - network: https://www.googleapis.com/compute/v1/projects/[MY_PROJECT]/global/networks/default
       # Access Config required to give the instance a public IP address
       accessConfigs:
       - name: External NAT
         type: ONE_TO_ONE_NAT
-    
+    metadata:
+      items:
+      - key: startup-script
+        value: |
+          #!/bin/bash
+          sudo yum install -y tomcat tomcat-webapps tomcat-admin-webapps
+	  sudo systemctl enable tomcat
+	  sudo systemctl start tomcat
